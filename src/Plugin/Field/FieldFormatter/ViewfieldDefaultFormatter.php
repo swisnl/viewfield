@@ -39,6 +39,12 @@ class ViewfieldDefaultFormatter extends ViewfieldFormatterBase {
 
     foreach ($items as $delta => $item) {
       $view = Views::getView($item->view_name);
+      
+      if (!$view) {
+        $elements[$delta]['#markup'] = t('Missing view.');
+        continue;
+      }
+      
       $arguments = $this->expandViewArguments($item->view_args, $entity);
 
       if ($view->access($item->view_display)) {
