@@ -1,6 +1,6 @@
 {
   "name": "drupal/viewfield",
-  "description": "Defines a field type to display a view.",
+  "description": "Defines an entity reference field type to display a view.",
   "type": "drupal-module",
   "license": "GPL-2.0+"
 }
