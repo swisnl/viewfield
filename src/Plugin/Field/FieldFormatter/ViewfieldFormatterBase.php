@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\viewfield\Plugin\Field\FieldFormatter\ViewfieldFormatterBase.
- */
-
 namespace Drupal\viewfield\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -21,6 +16,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class ViewfieldFormatterBase extends FormatterBase implements ContainerFactoryPluginInterface, TrustedCallbackInterface {
 
   /**
+   * The stack of viewviews being rendered recursively.
+   *
    * @var array
    */
   protected static $viewfieldStack = [];
@@ -34,9 +31,6 @@ abstract class ViewfieldFormatterBase extends FormatterBase implements Container
 
   /**
    * {@inheritdoc}
-   *
-   * @param Token $token_service
-   *   The token replacement system.
    */
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, Token $token_service) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
@@ -67,14 +61,15 @@ abstract class ViewfieldFormatterBase extends FormatterBase implements Container
   }
 
   /**
-   * Expand a view arguments string to an array of arguments as expected by views.
+   * Expand a view arguments string to an array of arguments.
    *
    * @param string $arguments_str
    *   The views arguments string to be expanded.
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *  The entity to be used as token data.
+   *   The entity to be used as token data.
    *
    * @return array
+   *   The view arguments array.
    */
   protected function expandViewArguments($arguments_str, EntityInterface $entity) {
     $args = [];
@@ -99,7 +94,7 @@ abstract class ViewfieldFormatterBase extends FormatterBase implements Container
         elseif (($comma = strpos($arguments_str, ',', $pos)) !== FALSE) {
           // Otherwise, get everything before next comma.
           $args[] = substr($arguments_str, $pos, $comma - $pos);
-          // Skip to after comma and repeat
+          // Skip to after comma and repeat.
           $pos = $comma + 1;
           $found = TRUE;
         }
@@ -119,7 +114,7 @@ abstract class ViewfieldFormatterBase extends FormatterBase implements Container
   }
 
   /**
-   * #pre_render callback for a viewfield field.
+   * The #pre_render callback for a viewfield field.
    *
    * @see ViewfieldFormatterBase::postRenderItem()
    */
@@ -136,7 +131,7 @@ abstract class ViewfieldFormatterBase extends FormatterBase implements Container
   }
 
   /**
-   * #post_render callback for a viewfield field.
+   * The #post_render callback for a viewfield field.
    *
    * @see ViewfieldFormatterBase::preRenderItem()
    */
@@ -144,4 +139,5 @@ abstract class ViewfieldFormatterBase extends FormatterBase implements Container
     unset(self::$viewfieldStack[$element['#entity_type'] . ':' . $element['#entity_id']]);
     return $content;
   }
+
 }

@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\viewfield\Plugin\Field\FieldFormatter\ViewfieldSummaryFormatter.
- */
-
-
 namespace Drupal\viewfield\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
@@ -35,4 +29,5 @@ class ViewfieldSummaryFormatter extends FormatterBase {
     }
     return $elements;
   }
+
 }

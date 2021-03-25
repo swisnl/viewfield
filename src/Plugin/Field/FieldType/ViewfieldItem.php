@@ -1,18 +1,12 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\viewfield\Plugin\Field\FieldType\ViewfieldItem.
- */
-
 namespace Drupal\viewfield\Plugin\Field\FieldType;
 
-use Drupal\Core\TypedData\DataDefinition;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Field\FieldItemBase;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\TypedData\DataDefinition;
 use Drupal\views\Views;
-
 
 /**
  * Plugin implementation of the 'viewfield' field type.
@@ -35,41 +29,39 @@ class ViewfieldItem extends FieldItemBase {
     return empty($value['view_name']) || empty($value['view_display']);
   }
 
-
   /**
    * {@inheritdoc}
    */
   public static function defaultFieldSettings() {
-    return array(
+    return [
       'force_default' => 0,
-      'allowed_views' => array(),
-    ) + parent::defaultFieldSettings();
+      'allowed_views' => [],
+    ] + parent::defaultFieldSettings();
   }
-
 
   /**
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    return array(
-      'columns' => array(
-        'view_name' => array(
+    return [
+      'columns' => [
+        'view_name' => [
           'type' => 'varchar',
           'not null' => TRUE,
           'length' => 128,
-        ),
-        'view_display' => array(
+        ],
+        'view_display' => [
           'type' => 'varchar',
           'not null' => TRUE,
           'length' => 128,
-        ),
-        'view_args' => array(
+        ],
+        'view_args' => [
           'type' => 'varchar',
           'not null' => FALSE,
           'length' => 255,
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
   }
 
   /**
@@ -85,26 +77,28 @@ class ViewfieldItem extends FieldItemBase {
     return $properties;
   }
 
- /**
-  * {@inheritdoc}
-  */
+  /**
+   * {@inheritdoc}
+   */
   public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
-    $element['force_default'] = array(
-      '#type'          => 'checkbox',
-      '#title'         => t('Always use default value'),
+    $element['force_default'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Always use default value'),
       '#default_value' => $this->getSetting('force_default'),
-      '#description'   => t('Hides this field in forms and enforces the configured default value. If this is checked, you must provide a default value.'),
-    );
+      '#description' => t('Hides this field in forms and enforces the configured default value. If this is checked, you must provide a default value.'),
+    ];
 
-    $element['allowed_views'] = array(
-      '#type'          => 'checkboxes',
-      '#title'         => t('Allowed views'),
-      '#options'       => Views::getViewsAsOptions(TRUE, 'enabled'),
+    $element['allowed_views'] = [
+      '#type' => 'checkboxes',
+      '#title' => t('Allowed views'),
+      '#options' => Views::getViewsAsOptions(TRUE, 'enabled'),
       '#default_value' => $this->getSetting('allowed_views'),
-      '#description'   => t('Only selected views will be available for content authors. Leave empty to allow all.'),
-    );
+      '#description' => t('Only selected views will be available for content authors. Leave empty to allow all.'),
+    ];
 
-    $element['#element_validate'] = [[get_class($this), 'fieldSettingsFormValidate']];
+    $element['#element_validate'] = [
+      [static::class, 'fieldSettingsFormValidate'],
+    ];
     return $element;
   }
 
@@ -125,12 +119,13 @@ class ViewfieldItem extends FieldItemBase {
     $widget_values = $form_input['default_value_input'][$field_name][0];
     if ($element['force_default']['#value']) {
       if (empty($widget_values['view_name']) || empty($widget_values['view_display'])) {
-        $form_state->setErrorByName('default_value_input', t('%title requires a default value.', array(
+        $form_state->setErrorByName('default_value_input', t('%title requires a default value.', [
           '%title' => $element['force_default']['#title'],
-        )));
+        ]));
       }
     }
 
     $form_state->setValueForElement($element['allowed_views'], array_filter($element['allowed_views']['#value']));
   }
+
 }

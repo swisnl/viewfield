@@ -1,16 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\viewfield\Plugin\Field\FieldWidget\ViewfieldWidget.
- */
-
 namespace Drupal\viewfield\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 use Drupal\views\Views;
 
 /**
@@ -51,16 +45,16 @@ class ViewfieldWidget extends WidgetBase {
       '#title' => t('Arguments'),
       '#default_value' => isset($items[$delta]->view_args) ? $items[$delta]->view_args : NULL,
       '#access' => !$field_settings['force_default'],
-      '#description' => t('A comma separated list of arguments to pass to the selected view. '),
+      '#description' => t('A comma separated list of arguments to pass to the selected view.'),
     ];
-    // TODO make configurable
+    // @todo make configurable.
     $element['view_args']['#access'] = FALSE;
 
     return $element;
   }
 
   /**
-   * Returns a select options list of views displays of enabled and allowed views.
+   * Returns a select options list of views displays of allowed views.
    *
    * @return array
    *   An array with the allowed and enabled views and displays.
@@ -77,7 +71,7 @@ class ViewfieldWidget extends WidgetBase {
         $label = $view->label();
         foreach ($view->get('display') as $display_id => $display) {
           if (in_array($display['display_plugin'], $allowed_display_plugins)) {
-              $options[$label][$id . ':' . $display['id']] = $display['display_title'];
+            $options[$label][$id . ':' . $display['id']] = $display['display_title'];
           }
         }
       }
@@ -98,4 +92,5 @@ class ViewfieldWidget extends WidgetBase {
     }
     return $values;
   }
+
 }

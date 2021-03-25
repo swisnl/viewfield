@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\viewfield\Plugin\Field\FieldFormatter\ViewfieldDefaultFormatter.
- */
-
-
 namespace Drupal\viewfield\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
@@ -42,22 +36,21 @@ class ViewfieldDefaultFormatter extends ViewfieldFormatterBase {
       $arguments = $this->expandViewArguments($item->view_args, $entity);
 
       if ($view->access($item->view_display)) {
-        // We ask ViewExecutable::buildRenderable() to avoid creating a render cache
-        // entry for the view output by passing FALSE, because we're going to cache
-        // the whole field's entity instead.
+        // We ask ViewExecutable::buildRenderable() to avoid creating a render
+        // cache entry for the view output by passing FALSE, because we're
+        // going to cache the whole field's entity instead.
         $elements[$delta] = $view->buildRenderable($item->view_display, $arguments, FALSE);
         // Don't use embed as it disables pagers
-        //$elements[$delta]['#embed'] = TRUE;
-
+        // $elements[$delta]['#embed'] = TRUE;
         // We expect to get a final render array, without another
         // top-level #pre_render callback. So, here we make sure that Views'
         // #pre_render callback has already been applied.
         $elements[$delta] = View::preRenderViewElement($elements[$delta]);
 
-        // When view_build is empty, the actual render array output for this View
-        // is going to be empty. In that case, return just #cache, so that the
-        // render system knows the reasons (cache contexts & tags) why this Views
-        // block is empty, and can cache it accordingly.
+        // When view_build is empty, the actual render array output for this
+        // View is going to be empty. In that case, return just #cache, so that
+        // the render system knows the reasons (cache contexts & tags) why this
+        // Views block is empty, and can cache it accordingly.
         if (empty($elements[$delta]['view_build'])) {
           $elements[$delta] = ['#cache' => $elements[$delta]['#cache']];
         }
@@ -65,4 +58,5 @@ class ViewfieldDefaultFormatter extends ViewfieldFormatterBase {
     }
     return $elements;
   }
+
 }
