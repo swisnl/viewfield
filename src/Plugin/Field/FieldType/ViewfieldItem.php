@@ -83,17 +83,17 @@ class ViewfieldItem extends FieldItemBase {
   public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
     $element['force_default'] = [
       '#type' => 'checkbox',
-      '#title' => t('Always use default value'),
+      '#title' => $this->t('Always use default value'),
       '#default_value' => $this->getSetting('force_default'),
-      '#description' => t('Hides this field in forms and enforces the configured default value. If this is checked, you must provide a default value.'),
+      '#description' => $this->t('Hides this field in forms and enforces the configured default value. If this is checked, you must provide a default value.'),
     ];
 
     $element['allowed_views'] = [
       '#type' => 'checkboxes',
-      '#title' => t('Allowed views'),
+      '#title' => $this->t('Allowed views'),
       '#options' => Views::getViewsAsOptions(TRUE, 'enabled'),
       '#default_value' => $this->getSetting('allowed_views'),
-      '#description' => t('Only selected views will be available for content authors. Leave empty to allow all.'),
+      '#description' => $this->t('Only selected views will be available for content authors. Leave empty to allow all.'),
     ];
 
     $element['#element_validate'] = [

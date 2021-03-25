@@ -33,7 +33,7 @@ class ViewfieldWidget extends WidgetBase {
 
     $element['view'] = [
       '#type' => 'select',
-      '#title' => t('View display'),
+      '#title' => $this->t('View display'),
       '#options' => $this->getPotentialReferences(),
       '#empty_value' => 0,
       '#access' => !$field_settings['force_default'],
@@ -42,10 +42,10 @@ class ViewfieldWidget extends WidgetBase {
     ];
     $element['view_args'] = [
       '#type' => 'textfield',
-      '#title' => t('Arguments'),
+      '#title' => $this->t('Arguments'),
       '#default_value' => isset($items[$delta]->view_args) ? $items[$delta]->view_args : NULL,
       '#access' => !$field_settings['force_default'],
-      '#description' => t('A comma separated list of arguments to pass to the selected view.'),
+      '#description' => $this->t('A comma separated list of arguments to pass to the selected view.'),
     ];
     // @todo make configurable.
     $element['view_args']['#access'] = FALSE;
@@ -69,7 +69,7 @@ class ViewfieldWidget extends WidgetBase {
     foreach ($views as $id => $view) {
       if (!empty($allowed_views) && isset($allowed_views[$id])) {
         $label = $view->label();
-        foreach ($view->get('display') as $display_id => $display) {
+        foreach ($view->get('display') as $display) {
           if (in_array($display['display_plugin'], $allowed_display_plugins)) {
             $options[$label][$id . ':' . $display['id']] = $display['display_title'];
           }
