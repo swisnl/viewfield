@@ -11,13 +11,14 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Utility\Token;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class for viewsfield field formatters.
  */
-abstract class ViewfieldFormatterBase extends FormatterBase implements ContainerFactoryPluginInterface {
+abstract class ViewfieldFormatterBase extends FormatterBase implements ContainerFactoryPluginInterface, TrustedCallbackInterface {
 
   /**
    * @var array
@@ -56,6 +57,13 @@ abstract class ViewfieldFormatterBase extends FormatterBase implements Container
       $configuration['third_party_settings'],
       $container->get('token')
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function trustedCallbacks() {
+    return ['preRenderItem', 'postRenderItem'];
   }
 
   /**

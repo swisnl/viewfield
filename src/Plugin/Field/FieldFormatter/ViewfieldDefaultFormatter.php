@@ -33,8 +33,8 @@ class ViewfieldDefaultFormatter extends ViewfieldFormatterBase {
     $elements = [
       '#entity_type' => $entity->getEntityTypeId(),
       '#entity_id' => $entity->id(),
-      '#pre_render' => [[get_class($this), 'preRenderItem']],
-      '#post_render' => [[get_class($this), 'postRenderItem']],
+      '#pre_render' => [[static::class, 'preRenderItem']],
+      '#post_render' => [[static::class, 'postRenderItem']],
     ];
 
     foreach ($items as $delta => $item) {
